@@ -1,0 +1,24 @@
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[]dp = new int[amount + 1];
+        Arrays.fill(dp, -1);  
+
+       for(int i = 0; i <= amount; i++){
+            if(i % coins[0] == 0) dp[i] = i / coins[0];
+            else dp[i] = (int)1e9;
+        }
+
+        for(int i = 1; i<n; i++){
+            for(int j = 0; j <= amount; j++){
+                int notTake = dp[j];
+                int take = (int)1e9;
+                if(j >= coins[i]){
+                    take = 1 + dp[j - coins[i]];
+                }
+                dp[j] = Math.min(take, notTake);
+            }
+        }
+        return dp[amount] >= 1e9 ? -1 : dp[amount];
+    }
+}
